@@ -140,7 +140,10 @@ mod tests {
         // ONE recreate. We never call mark_recovered, so the guard stays "recovering".
         let mut g = RecoveryGuard::with_defaults();
         let rec = FakeRecreator::default();
-        let res = FakeRestorer { fail: true, ..Default::default() };
+        let res = FakeRestorer {
+            fail: true,
+            ..Default::default()
+        };
         let pane = Uuid::new_v4();
         // First fails restore (stays not-recovering after mark_failed) — recreate once.
         let _ = handle_process_failed(&mut g, &rec, &res, pane);
@@ -164,7 +167,10 @@ mod tests {
     #[test]
     fn recreate_failure_resets_for_retry() {
         let mut g = RecoveryGuard::with_defaults();
-        let rec = FakeRecreator { fail: true, ..Default::default() };
+        let rec = FakeRecreator {
+            fail: true,
+            ..Default::default()
+        };
         let res = FakeRestorer::default();
         let pane = Uuid::new_v4();
         let out = handle_process_failed(&mut g, &rec, &res, pane);

@@ -95,8 +95,12 @@ pub fn overlay_physical_rect(input: &BoundsInput) -> PhysicalRect {
 
     // Size scales with the same factor; physical footprint is fixed even when the
     // rect straddles two monitors (OS renders each half at its own DPI).
-    let width = (input.anchor_rect_css.width * input.main_scale).round().max(0.0) as u32;
-    let height = (input.anchor_rect_css.height * input.main_scale).round().max(0.0) as u32;
+    let width = (input.anchor_rect_css.width * input.main_scale)
+        .round()
+        .max(0.0) as u32;
+    let height = (input.anchor_rect_css.height * input.main_scale)
+        .round()
+        .max(0.0) as u32;
 
     PhysicalRect {
         x: phys_x,

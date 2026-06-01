@@ -109,7 +109,10 @@ mod tests {
         let rb = FakeRebuilder::default();
         let pane = Uuid::new_v4();
         let out = handle_overlay_crash(&mut g, &rb, pane);
-        assert_eq!(out, OverlayRecoveryOutcome::Recovered(format!("browser-{pane}")));
+        assert_eq!(
+            out,
+            OverlayRecoveryOutcome::Recovered(format!("browser-{pane}"))
+        );
         assert_eq!(*rb.recreate_calls.borrow(), 1);
         assert_eq!(*rb.resync_calls.borrow(), 1);
     }
@@ -117,7 +120,10 @@ mod tests {
     #[test]
     fn resync_failure_does_not_leave_recovering() {
         let mut g = RecoveryGuard::with_defaults();
-        let rb = FakeRebuilder { resync_fail: true, ..Default::default() };
+        let rb = FakeRebuilder {
+            resync_fail: true,
+            ..Default::default()
+        };
         let pane = Uuid::new_v4();
         let out = handle_overlay_crash(&mut g, &rb, pane);
         assert!(matches!(out, OverlayRecoveryOutcome::Failed(_)));
@@ -126,11 +132,27 @@ mod tests {
 
     #[test]
     fn exhausts_budget_then_gives_up() {
-        let mut g = RecoveryGuard::new(super::super::recovery::BackoffSchedule::default(), 2, std::time::Duration::from_secs(60));
-        let rb = FakeRebuilder { recreate_fail: true, ..Default::default() };
+        let mut g = RecoveryGuard::new(
+            super::super::recovery::BackoffSchedule::default(),
+            2,
+            std::time::Duration::from_secs(60),
+        );
+        let rb = FakeRebuilder {
+            recreate_fail: true,
+            ..Default::default()
+        };
         let pane = Uuid::new_v4();
-        assert!(matches!(handle_overlay_crash(&mut g, &rb, pane), OverlayRecoveryOutcome::Failed(_)));
-        assert!(matches!(handle_overlay_crash(&mut g, &rb, pane), OverlayRecoveryOutcome::Failed(_)));
-        assert_eq!(handle_overlay_crash(&mut g, &rb, pane), OverlayRecoveryOutcome::GaveUp);
+        assert!(matches!(
+            handle_overlay_crash(&mut g, &rb, pane),
+            OverlayRecoveryOutcome::Failed(_)
+        ));
+        assert!(matches!(
+            handle_overlay_crash(&mut g, &rb, pane),
+            OverlayRecoveryOutcome::Failed(_)
+        ));
+        assert_eq!(
+            handle_overlay_crash(&mut g, &rb, pane),
+            OverlayRecoveryOutcome::GaveUp
+        );
     }
 }

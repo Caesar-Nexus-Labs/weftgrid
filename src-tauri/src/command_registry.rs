@@ -175,8 +175,18 @@ mod tests {
     fn only_command_registry_calls_builder_setup() {
         let src = Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
         let tracks = [
-            "browser", "automation", "agent_rpc", "sidebar", "palette", "pty",
-            "config", "ssh", "import", "vmclient", "notify", "reliability",
+            "browser",
+            "automation",
+            "agent_rpc",
+            "sidebar",
+            "palette",
+            "pty",
+            "config",
+            "ssh",
+            "import",
+            "vmclient",
+            "notify",
+            "reliability",
         ];
         for track in tracks {
             let mod_rs = src.join(track).join("mod.rs");

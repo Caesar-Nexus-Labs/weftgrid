@@ -48,7 +48,9 @@ async fn issued_token_authenticates_and_dispatches() {
     let req = RpcRequest {
         token: loaded,
         command: Command::Browser {
-            target: PaneTarget::Pane { id: "pane-7".into() },
+            target: PaneTarget::Pane {
+                id: "pane-7".into(),
+            },
             action: BrowserAction::Snapshot,
         },
     };

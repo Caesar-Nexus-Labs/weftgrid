@@ -33,8 +33,7 @@ fn load(name: &str) -> BoundsFixture {
     let path = fixtures_dir().join(name);
     let raw = std::fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("read fixture {}: {e}", path.display()));
-    serde_json::from_str(&raw)
-        .unwrap_or_else(|e| panic!("parse fixture {}: {e}", path.display()))
+    serde_json::from_str(&raw).unwrap_or_else(|e| panic!("parse fixture {}: {e}", path.display()))
 }
 
 fn assert_fixture(name: &str) {
@@ -82,12 +81,32 @@ fn left_monitor_negative_origin_with_scroll() {
 #[test]
 fn straddle_is_false_when_rect_fits_one_monitor() {
     let monitors = [
-        PhysicalRect { x: 0, y: 0, width: 1920, height: 1080 },
-        PhysicalRect { x: 1920, y: 0, width: 1920, height: 1080 },
+        PhysicalRect {
+            x: 0,
+            y: 0,
+            width: 1920,
+            height: 1080,
+        },
+        PhysicalRect {
+            x: 1920,
+            y: 0,
+            width: 1920,
+            height: 1080,
+        },
     ];
-    let inside = PhysicalRect { x: 100, y: 100, width: 200, height: 200 };
+    let inside = PhysicalRect {
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 200,
+    };
     assert!(!straddles_monitors(&inside, &monitors));
-    let crossing = PhysicalRect { x: 1820, y: 100, width: 200, height: 200 };
+    let crossing = PhysicalRect {
+        x: 1820,
+        y: 100,
+        width: 200,
+        height: 200,
+    };
     assert!(straddles_monitors(&crossing, &monitors));
 }
 
@@ -97,7 +116,12 @@ fn negative_size_clamps_to_zero() {
     let input = BoundsInput {
         main_outer_physical: PhysicalPoint { x: 0, y: 0 },
         client_inset_physical: PhysicalPoint { x: 0, y: 0 },
-        anchor_rect_css: CssRect { x: 0.0, y: 0.0, width: -10.0, height: -5.0 },
+        anchor_rect_css: CssRect {
+            x: 0.0,
+            y: 0.0,
+            width: -10.0,
+            height: -5.0,
+        },
         scroll_offset_css: (0.0, 0.0),
         main_scale: 1.0,
     };

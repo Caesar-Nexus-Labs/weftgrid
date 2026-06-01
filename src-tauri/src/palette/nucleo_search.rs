@@ -73,8 +73,11 @@ pub fn search(
 
         for (index, cand) in corpus.iter().enumerate() {
             indices.clear();
-            let title_score =
-                pattern.indices(Utf32Str::new(&cand.text, &mut title_buf), &mut matcher, &mut indices);
+            let title_score = pattern.indices(
+                Utf32Str::new(&cand.text, &mut title_buf),
+                &mut matcher,
+                &mut indices,
+            );
             let keyword_score = if cand.keywords.is_empty() {
                 None
             } else {
@@ -191,7 +194,10 @@ mod tests {
         assert_eq!(out[0].indices.len(), 4);
         // Offsets are sorted + within the title length.
         assert!(out[0].indices.windows(2).all(|w| w[0] < w[1]));
-        assert!(out[0].indices.iter().all(|&i| (i as usize) < "Split Right".len()));
+        assert!(out[0]
+            .indices
+            .iter()
+            .all(|&i| (i as usize) < "Split Right".len()));
     }
 
     #[test]
@@ -204,7 +210,10 @@ mod tests {
     #[test]
     fn history_boost_pushes_recency_up() {
         // Two equally-good matches; the boosted id must rank first.
-        let corpus = vec![cand("first", "Toggle Sidebar"), cand("second", "Toggle Statusbar")];
+        let corpus = vec![
+            cand("first", "Toggle Sidebar"),
+            cand("second", "Toggle Statusbar"),
+        ];
         let mut boosts = HashMap::new();
         boosts.insert("second".to_string(), 5_000.0);
         let out = search("toggle", &corpus, &boosts);

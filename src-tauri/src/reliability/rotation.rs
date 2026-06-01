@@ -151,10 +151,22 @@ mod tests {
             ..RotationPolicy::default()
         };
         let files = vec![
-            RotatedFile { path: "a".into(), age: secs(30) },
-            RotatedFile { path: "b".into(), age: secs(10) },
-            RotatedFile { path: "c".into(), age: secs(20) },
-            RotatedFile { path: "d".into(), age: secs(40) },
+            RotatedFile {
+                path: "a".into(),
+                age: secs(30),
+            },
+            RotatedFile {
+                path: "b".into(),
+                age: secs(10),
+            },
+            RotatedFile {
+                path: "c".into(),
+                age: secs(20),
+            },
+            RotatedFile {
+                path: "d".into(),
+                age: secs(40),
+            },
         ];
         let del = plan_retention(&p, files);
         // Keep the 2 newest (b@10, c@20); delete the 2 oldest (a@30, d@40).
@@ -171,8 +183,14 @@ mod tests {
             ..RotationPolicy::default()
         };
         let files = vec![
-            RotatedFile { path: "fresh".into(), age: secs(50) },
-            RotatedFile { path: "stale".into(), age: secs(200) },
+            RotatedFile {
+                path: "fresh".into(),
+                age: secs(50),
+            },
+            RotatedFile {
+                path: "stale".into(),
+                age: secs(200),
+            },
         ];
         let del = plan_retention(&p, files);
         assert_eq!(del, vec![PathBuf::from("stale")]);
@@ -186,9 +204,18 @@ mod tests {
             ..RotationPolicy::default()
         };
         let files = vec![
-            RotatedFile { path: "newest".into(), age: secs(10) },
-            RotatedFile { path: "mid".into(), age: secs(50) },
-            RotatedFile { path: "old".into(), age: secs(500) },
+            RotatedFile {
+                path: "newest".into(),
+                age: secs(10),
+            },
+            RotatedFile {
+                path: "mid".into(),
+                age: secs(50),
+            },
+            RotatedFile {
+                path: "old".into(),
+                age: secs(500),
+            },
         ];
         let del = plan_retention(&p, files);
         // keep only newest; mid dropped by count, old dropped by count+age.

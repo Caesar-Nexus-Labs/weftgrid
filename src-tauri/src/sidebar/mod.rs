@@ -114,7 +114,10 @@ mod tests {
         let (mut ws, pid) = workspace();
         let outcome = apply_report(&mut ws, pid, MetadataReport::GitBranch("main".into()));
         assert_eq!(outcome, ReportOutcome::Stored);
-        assert_eq!(ws.panel_git_branches.get(&pid).map(String::as_str), Some("main"));
+        assert_eq!(
+            ws.panel_git_branches.get(&pid).map(String::as_str),
+            Some("main")
+        );
     }
 
     #[test]
@@ -161,6 +164,9 @@ mod tests {
         let (mut ws, pid) = workspace();
         apply_report(&mut ws, pid, MetadataReport::GitBranch("main".into()));
         apply_report(&mut ws, pid, MetadataReport::GitBranch("dev".into()));
-        assert_eq!(ws.panel_git_branches.get(&pid).map(String::as_str), Some("dev"));
+        assert_eq!(
+            ws.panel_git_branches.get(&pid).map(String::as_str),
+            Some("dev")
+        );
     }
 }

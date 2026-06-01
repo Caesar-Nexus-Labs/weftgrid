@@ -153,9 +153,11 @@ mod tests {
     fn save_then_load_round_trips() {
         let dir = temp_dir("roundtrip");
         let store = ConfigStore::with_dir(&dir);
-        let mut cfg = Config::default();
-        cfg.tab_layout = TabLayout::Vertical;
-        cfg.import_consent = true;
+        let cfg = Config {
+            tab_layout: TabLayout::Vertical,
+            import_consent: true,
+            ..Default::default()
+        };
         store.save(&cfg).unwrap();
         assert_eq!(store.load().unwrap(), cfg);
         let _ = fs::remove_dir_all(&dir);
@@ -172,8 +174,10 @@ mod tests {
         store.save(&original).unwrap();
 
         // Simulate interrupted write: temp written but rename never happened.
-        let mut half = Config::default();
-        half.import_consent = true;
+        let half = Config {
+            import_consent: true,
+            ..Default::default()
+        };
         let json = serde_json::to_string_pretty(&half).unwrap();
         write_synced(&store.temp_path(), json.as_bytes()).unwrap();
 
@@ -191,8 +195,10 @@ mod tests {
         let dir = temp_dir("overwrite");
         let store = ConfigStore::with_dir(&dir);
         store.save(&Config::default()).unwrap();
-        let mut updated = Config::default();
-        updated.default_shell = Some("/bin/bash".into());
+        let updated = Config {
+            default_shell: Some("/bin/bash".into()),
+            ..Config::default()
+        };
         store.save(&updated).unwrap();
         assert_eq!(store.load().unwrap(), updated);
         let _ = fs::remove_dir_all(&dir);

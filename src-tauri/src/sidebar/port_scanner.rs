@@ -47,7 +47,11 @@ pub fn coalesce(batches: &[Vec<ListeningPort>]) -> Vec<ListeningPort> {
 /// without the user opting in (the spawn itself the caller must also skip — this
 /// is the structural reminder at the parse boundary). `enabled` is read from
 /// [`super::state::SidebarState::port_scan_enabled`].
-pub fn parse_scan_gated(enabled: bool, source: ScanSource, output: &str) -> Option<Vec<ListeningPort>> {
+pub fn parse_scan_gated(
+    enabled: bool,
+    source: ScanSource,
+    output: &str,
+) -> Option<Vec<ListeningPort>> {
     if !enabled {
         return None;
     }
@@ -146,7 +150,10 @@ Active Connections
     #[test]
     fn coalesce_merges_dedups_and_sorts_multiple_scans() {
         let lsof = parse_scan(ScanSource::Lsof, "x x x x TCP *:3000 (LISTEN)");
-        let ss = parse_scan(ScanSource::Ss, "LISTEN 0 128 0.0.0.0:3000 0.0.0.0:*\nLISTEN 0 128 0.0.0.0:8080 0.0.0.0:*");
+        let ss = parse_scan(
+            ScanSource::Ss,
+            "LISTEN 0 128 0.0.0.0:3000 0.0.0.0:*\nLISTEN 0 128 0.0.0.0:8080 0.0.0.0:*",
+        );
         // 3000 appears in both batches → coalesced to one entry; result sorted.
         assert_eq!(coalesce(&[lsof, ss]), vec![3000, 8080]);
     }

@@ -43,10 +43,7 @@ pub fn build_dump(message: &str, location: &str, thread: &str, share_opt_in: boo
     let body = format!(
         "weftgrid crash dump\nthread: {scrubbed_thread}\nlocation: {location}\nmessage: {scrubbed_msg}\n"
     );
-    CrashDump {
-        body,
-        share_opt_in,
-    }
+    CrashDump { body, share_opt_in }
 }
 
 /// Full scrub for crash text: redact secrets, then anonymise usernames in paths.
@@ -140,7 +137,9 @@ pub fn set_panic_hook(app_data_dir: PathBuf, share_opt_in: Arc<AtomicBool>) {
     let previous = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info: &PanicHookInfo| {
         let payload = panic_payload_str(info);
-        let location = info.location().map(|l| format!("{}:{}", l.file(), l.line()));
+        let location = info
+            .location()
+            .map(|l| format!("{}:{}", l.file(), l.line()));
         let dump = dump_from_parts(&payload, location, share_opt_in.load(Ordering::Relaxed));
         let id = uuid::Uuid::new_v4().simple().to_string();
         let _ = write_dump(&crash_dir(&app_data_dir), &id, &dump);
@@ -171,7 +170,11 @@ mod tests {
             "main",
             false,
         );
-        assert!(!dump.body.contains("deadbeefsecret"), "leaked: {}", dump.body);
+        assert!(
+            !dump.body.contains("deadbeefsecret"),
+            "leaked: {}",
+            dump.body
+        );
         assert!(dump.body.contains("<redacted:token>"));
         assert!(dump.body.contains("src/net.rs:42"));
     }
@@ -184,7 +187,11 @@ mod tests {
             "worker",
             false,
         );
-        assert!(!dump.body.contains("alice"), "leaked username: {}", dump.body);
+        assert!(
+            !dump.body.contains("alice"),
+            "leaked username: {}",
+            dump.body
+        );
         assert!(dump.body.contains(r"C:\Users\<user>\AppData"));
     }
 

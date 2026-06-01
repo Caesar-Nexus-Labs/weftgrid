@@ -2,11 +2,13 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
+  app:
+    name: app (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
@@ -30,6 +32,10 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
       - name: Install JS deps
         run: npm ci
 
@@ -38,6 +44,9 @@ jobs:
 
       - name: Type-check app (allowJs:false)
         run: npm run check
+
+      - name: TS unit tests
+        run: npm test
 
       - name: Build frontend (pipeline #1)
         run: npm run build
@@ -48,8 +57,38 @@ jobs:
 
       - name: Rust clippy
         working-directory: src-tauri
-        run: cargo clippy -- -D warnings
+        run: cargo clippy --all-targets -- -D warnings
 
       - name: Rust test
         working-directory: src-tauri
+        run: cargo test
+
+  cli:
+    name: weft-cli (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: crates/weft-cli
+
+      - name: Rust fmt
+        working-directory: crates/weft-cli
+        run: cargo fmt --check
+
+      - name: Rust clippy
+        working-directory: crates/weft-cli
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Build + test
+        working-directory: crates/weft-cli
         run: cargo test

@@ -202,8 +202,10 @@ mod tests {
         let writer = RedactingWriter::new(buf.clone());
         let mut sink = writer.make_writer();
         sink.write_all(b"Cookie: SID=leakvalue123; x=1\n").unwrap();
-        sink.write_all(b"-----BEGIN RSA PRIVATE KEY-----\nLEAKBODY\n-----END RSA PRIVATE KEY-----\n")
-            .unwrap();
+        sink.write_all(
+            b"-----BEGIN RSA PRIVATE KEY-----\nLEAKBODY\n-----END RSA PRIVATE KEY-----\n",
+        )
+        .unwrap();
         let out = buf.contents();
         assert!(!out.contains("leakvalue123"));
         assert!(!out.contains("LEAKBODY"));

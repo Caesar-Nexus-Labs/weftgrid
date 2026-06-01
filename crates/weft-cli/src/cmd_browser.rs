@@ -62,9 +62,7 @@ enum BrowserAction {
         text: String,
     },
     /// Evaluate JavaScript in the pane and return its result.
-    Eval {
-        js: String,
-    },
+    Eval { js: String },
     /// Wait for a selector (optional) up to a timeout (ms).
     Wait {
         #[arg(long)]
@@ -83,9 +81,7 @@ enum BrowserAction {
         attr: Option<String>,
     },
     /// Find elements matching a query.
-    Find {
-        query: String,
-    },
+    Find { query: String },
 }
 
 /// Build the pane target JSON: `Pane{id}` when `--pane` is given, else `Focused`.

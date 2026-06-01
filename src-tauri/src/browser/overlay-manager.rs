@@ -75,8 +75,11 @@ impl OverlayCreateParams {
 pub trait WindowSpawner {
     /// Create the borderless overlay window from these params, navigate to
     /// `initial_url` if given. Returns the created window's label on success.
-    fn spawn(&self, params: &OverlayCreateParams, initial_url: Option<&str>)
-        -> Result<String, String>;
+    fn spawn(
+        &self,
+        params: &OverlayCreateParams,
+        initial_url: Option<&str>,
+    ) -> Result<String, String>;
     /// Move/resize an existing overlay to a PHYSICAL rect (physical setters).
     fn set_bounds(&self, label: &str, rect: PhysicalRect) -> Result<(), String>;
     /// Navigate an existing overlay.

@@ -202,17 +202,15 @@ pub fn default_endpoint(app_data_dir: &std::path::Path, session_id: &str) -> Str
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::super::dispatch::{test_support::MockAutomation, StubHandlers};
     use super::super::protocol::{
         read_frame, write_frame, BrowserAction, Command, PaneTarget, RpcRequest,
     };
+    use super::*;
 
     fn test_ctx(token: &str) -> ServerContext {
-        let dispatcher = Dispatcher::new(
-            Box::new(MockAutomation::default()),
-            Box::new(StubHandlers),
-        );
+        let dispatcher =
+            Dispatcher::new(Box::new(MockAutomation::default()), Box::new(StubHandlers));
         ServerContext {
             token: Arc::new(SessionToken::from_secret(token)),
             dispatcher: Arc::new(dispatcher),

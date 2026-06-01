@@ -169,7 +169,10 @@ mod tests {
         let pid = Uuid::new_v4();
         state.record_transient(pid, &MetadataReport::Status("starting".into()));
         state.record_transient(pid, &MetadataReport::Status("done".into()));
-        assert_eq!(state.transient_for(pid).unwrap().status.as_deref(), Some("done"));
+        assert_eq!(
+            state.transient_for(pid).unwrap().status.as_deref(),
+            Some("done")
+        );
     }
 
     #[test]
@@ -182,7 +185,10 @@ mod tests {
         let meta = state.transient_for(pid).unwrap();
         assert_eq!(meta.log_tail.len(), LOG_TAIL_MAX);
         // Oldest dropped; newest retained.
-        assert_eq!(meta.log_tail.last().unwrap(), &format!("line {}", LOG_TAIL_MAX + 24));
+        assert_eq!(
+            meta.log_tail.last().unwrap(),
+            &format!("line {}", LOG_TAIL_MAX + 24)
+        );
         assert_eq!(meta.log_tail.first().unwrap(), &format!("line {}", 25));
     }
 

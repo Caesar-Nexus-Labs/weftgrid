@@ -9,6 +9,7 @@
 //!   - `cdp_args()` -> `additional_browser_args` (re-includes wry defaults),
 //!   - `proxy_url` (String) -> parsed to `tauri::Url` -> `proxy_url(..)`,
 //!   - `profile_dir` -> `data_directory(..)` (per-profile cookie isolation).
+//!
 //! The overlay is borderless (`decorations(false)`), off-taskbar
 //! (`skip_taskbar(true)`), owned by the main window, and starts hidden so the
 //! first bounds sync places it before it is shown (no flash at the origin).
@@ -135,7 +136,7 @@ impl<R: Runtime> WindowSpawner for TauriWindowSpawner<R> {
         // Best-effort: eval window.scrollTo on the overlay after navigation. A
         // failed eval must not fail the recreate.
         let window = self.window(label)?;
-        let _ = window.eval(&format!("window.scrollTo({x}, {y});"));
+        let _ = window.eval(format!("window.scrollTo({x}, {y});"));
         Ok(())
     }
 }

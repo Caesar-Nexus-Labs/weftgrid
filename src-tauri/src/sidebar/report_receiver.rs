@@ -145,7 +145,10 @@ mod tests {
     #[test]
     fn report_kind_lowers_to_matching_metadata_report() {
         assert_eq!(
-            ReportKind::GitBranch { branch: "main".into() }.into_report(),
+            ReportKind::GitBranch {
+                branch: "main".into()
+            }
+            .into_report(),
             MetadataReport::GitBranch("main".into())
         );
         assert_eq!(
@@ -157,7 +160,10 @@ mod tests {
             MetadataReport::Ports(vec![3000])
         );
         assert_eq!(
-            ReportKind::Status { status: "run".into() }.into_report(),
+            ReportKind::Status {
+                status: "run".into()
+            }
+            .into_report(),
             MetadataReport::Status("run".into())
         );
         assert_eq!(
@@ -180,7 +186,12 @@ mod tests {
         let decoded: ReportFrame = serde_json::from_str(&json).unwrap();
         assert_eq!(decoded.workspace_id, wid);
         assert_eq!(decoded.panel_id, pid);
-        assert_eq!(decoded.kind, ReportKind::GitBranch { branch: "dev".into() });
+        assert_eq!(
+            decoded.kind,
+            ReportKind::GitBranch {
+                branch: "dev".into()
+            }
+        );
     }
 
     #[test]
@@ -195,7 +206,10 @@ mod tests {
         );
         let frame: ReportFrame = serde_json::from_str(&json).unwrap();
 
-        assert_eq!(receive_report(&mut store, &sidebar, frame), ReportOutcome::Stored);
+        assert_eq!(
+            receive_report(&mut store, &sidebar, frame),
+            ReportOutcome::Stored
+        );
 
         let snaps = crate::command_registry::config::workspace_store::snapshot(&store);
         assert_eq!(snaps.len(), 1);
@@ -210,11 +224,20 @@ mod tests {
         let outcome = receive_report(
             &mut store,
             &sidebar,
-            frame(wid, pid, ReportKind::GitBranch { branch: "feature/x".into() }),
+            frame(
+                wid,
+                pid,
+                ReportKind::GitBranch {
+                    branch: "feature/x".into(),
+                },
+            ),
         );
         assert_eq!(outcome, ReportOutcome::Stored);
         assert_eq!(
-            store.workspaces[0].panel_git_branches.get(&pid).map(String::as_str),
+            store.workspaces[0]
+                .panel_git_branches
+                .get(&pid)
+                .map(String::as_str),
             Some("feature/x")
         );
     }
@@ -225,15 +248,39 @@ mod tests {
         let sidebar = SidebarState::default();
 
         assert_eq!(
-            receive_report(&mut store, &sidebar, frame(wid, pid, ReportKind::Status { status: "building".into() })),
+            receive_report(
+                &mut store,
+                &sidebar,
+                frame(
+                    wid,
+                    pid,
+                    ReportKind::Status {
+                        status: "building".into()
+                    }
+                )
+            ),
             ReportOutcome::StoredTransient
         );
         assert_eq!(
-            receive_report(&mut store, &sidebar, frame(wid, pid, ReportKind::Progress { progress: 0.4 })),
+            receive_report(
+                &mut store,
+                &sidebar,
+                frame(wid, pid, ReportKind::Progress { progress: 0.4 })
+            ),
             ReportOutcome::StoredTransient
         );
         assert_eq!(
-            receive_report(&mut store, &sidebar, frame(wid, pid, ReportKind::Log { line: "compiling".into() })),
+            receive_report(
+                &mut store,
+                &sidebar,
+                frame(
+                    wid,
+                    pid,
+                    ReportKind::Log {
+                        line: "compiling".into()
+                    }
+                )
+            ),
             ReportOutcome::StoredTransient
         );
 
@@ -253,7 +300,13 @@ mod tests {
         let outcome = receive_report(
             &mut store,
             &sidebar,
-            frame(stranger, pid, ReportKind::GitBranch { branch: "main".into() }),
+            frame(
+                stranger,
+                pid,
+                ReportKind::GitBranch {
+                    branch: "main".into(),
+                },
+            ),
         );
         assert_eq!(outcome, ReportOutcome::Unstored);
         assert!(store.workspaces[0].panel_git_branches.is_empty());

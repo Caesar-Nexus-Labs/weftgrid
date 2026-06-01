@@ -132,7 +132,7 @@ mod tests {
     #[test]
     fn adjacent_tag_shape_is_stable() {
         // Wire shape contract: adjacently-tagged `{ "kind", "data" }`.
-        let json = serde_json::to_value(&VmRequest::Connect(ConnectParams {
+        let json = serde_json::to_value(VmRequest::Connect(ConnectParams {
             vm_id: "vm-1".into(),
         }))
         .unwrap();

@@ -131,11 +131,17 @@ mod tests {
         let p = fast_policy(3);
         assert_eq!(
             p.plan_reconnect(0),
-            ReconnectStep::Retry { attempt: 1, delay: Duration::from_millis(10) }
+            ReconnectStep::Retry {
+                attempt: 1,
+                delay: Duration::from_millis(10)
+            }
         );
         assert_eq!(
             p.plan_reconnect(2),
-            ReconnectStep::Retry { attempt: 3, delay: Duration::from_millis(40) }
+            ReconnectStep::Retry {
+                attempt: 3,
+                delay: Duration::from_millis(40)
+            }
         );
         // 3 done == max → degrade.
         assert_eq!(p.plan_reconnect(3), ReconnectStep::Degrade);
@@ -185,7 +191,14 @@ mod tests {
     fn first_attempt_success_no_extra_tries() {
         let p = fast_policy(5);
         let calls = Cell::new(0u32);
-        let result = run_reconnect(&p, |_| { calls.set(calls.get() + 1); Ok(()) }, |_| {});
+        let result = run_reconnect(
+            &p,
+            |_| {
+                calls.set(calls.get() + 1);
+                Ok(())
+            },
+            |_| {},
+        );
         assert_eq!(result, ReconnectResult::Reconnected { attempt: 1 });
         assert_eq!(calls.get(), 1);
     }

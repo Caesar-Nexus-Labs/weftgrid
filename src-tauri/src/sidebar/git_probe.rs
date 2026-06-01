@@ -72,11 +72,7 @@ fn parse_head(head: &str) -> Option<String> {
     if let Some(reference) = head.strip_prefix("ref:") {
         // `ref: refs/heads/feature/x` → keep everything after `refs/heads/`.
         let name = reference.trim();
-        return Some(
-            name.strip_prefix("refs/heads/")
-                .unwrap_or(name)
-                .to_string(),
-        );
+        return Some(name.strip_prefix("refs/heads/").unwrap_or(name).to_string());
     }
     if head.is_empty() {
         return None;
@@ -123,7 +119,10 @@ mod tests {
         static COUNTER: AtomicU32 = AtomicU32::new(0);
         let n = COUNTER.fetch_add(1, Ordering::Relaxed);
         let mut dir = std::env::temp_dir();
-        dir.push(format!("weftgrid-gitprobe-{tag}-{}-{n}", std::process::id()));
+        dir.push(format!(
+            "weftgrid-gitprobe-{tag}-{}-{n}",
+            std::process::id()
+        ));
         fs::create_dir_all(&dir).unwrap();
         dir
     }

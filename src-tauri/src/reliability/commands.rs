@@ -37,10 +37,7 @@ pub struct ReliabilityState {
 /// value. NEVER triggers an upload — share is a separate, explicit user action; this
 /// only records consent that future tooling could honour.
 #[tauri::command]
-pub fn reliability_crash_optin(
-    state: State<'_, ReliabilityState>,
-    enabled: bool,
-) -> bool {
+pub fn reliability_crash_optin(state: State<'_, ReliabilityState>, enabled: bool) -> bool {
     state.crash_share_opt_in.store(enabled, Ordering::Relaxed);
     enabled
 }

@@ -18,8 +18,8 @@
 //! the `workspace_snapshot` Tauri command (`config/commands.rs`) — that command
 //! returns the bare P12 snapshot today. Wiring it (lock `ConfigState` for the store
 //! + read the managed `SidebarState`, call `overlay_transient`) is the same Wave-3
-//! integration step that wires the P13 socket into `report_receiver`; both share
-//! the need for a P12 accessor that hands out the store + sidebar state together.
+//!   integration step that wires the P13 socket into `report_receiver`; both share
+//!   the need for a P12 accessor that hands out the store + sidebar state together.
 
 use crate::model::{WorkspaceSnapshot, WorkspaceStore};
 

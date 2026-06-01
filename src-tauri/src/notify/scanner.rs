@@ -250,7 +250,7 @@ mod tests {
     fn runaway_payload_is_dropped_then_recovers() {
         let mut s = OscScanner::new();
         let mut huge = b"\x1b]9;".to_vec();
-        huge.extend(std::iter::repeat(b'x').take(MAX_PENDING + 10));
+        huge.extend(std::iter::repeat_n(b'x', MAX_PENDING + 10));
         assert!(s.push(&huge).is_empty());
         // Scanner recovered: a fresh, well-formed sequence still parses.
         let got = s.push(b"\x1b]9;ok\x07");

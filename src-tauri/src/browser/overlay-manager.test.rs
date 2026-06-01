@@ -100,7 +100,9 @@ fn create_plumbs_params_and_initial_url() {
     let mgr = OverlayManager::new(FakeSpawner::default());
     let p = params(Some(9444), Some("socks5h://127.0.0.1:1080"));
     let pane = p.pane_id;
-    let label = mgr.create(p.clone(), Some("https://example.com".into())).unwrap();
+    let label = mgr
+        .create(p.clone(), Some("https://example.com".into()))
+        .unwrap();
     assert_eq!(label, format!("browser-{pane}"));
 
     let (got_params, got_url) = mgr.spawner().last_spawn_args.borrow().clone().unwrap();
@@ -126,13 +128,24 @@ fn lifecycle_create_position_navigate_hide_destroy() {
     let pane = p.pane_id;
     let label = mgr.create(p, None).unwrap();
 
-    mgr.position(&pane, PhysicalRect { x: 10, y: 20, width: 300, height: 200 })
-        .unwrap();
+    mgr.position(
+        &pane,
+        PhysicalRect {
+            x: 10,
+            y: 20,
+            width: 300,
+            height: 200,
+        },
+    )
+    .unwrap();
     mgr.navigate(&pane, "https://docs.rs").unwrap();
     mgr.set_visible(&pane, false).unwrap();
     mgr.set_on_top(&pane, true).unwrap();
 
-    assert_eq!(mgr.entry(&pane).unwrap().current_url.as_deref(), Some("https://docs.rs"));
+    assert_eq!(
+        mgr.entry(&pane).unwrap().current_url.as_deref(),
+        Some("https://docs.rs")
+    );
     assert!(!mgr.entry(&pane).unwrap().visible);
 
     mgr.destroy(&pane).unwrap();
@@ -158,7 +171,15 @@ fn ops_on_unknown_pane_error() {
     let mgr = OverlayManager::new(FakeSpawner::default());
     let ghost = Uuid::new_v4();
     assert!(mgr
-        .position(&ghost, PhysicalRect { x: 0, y: 0, width: 1, height: 1 })
+        .position(
+            &ghost,
+            PhysicalRect {
+                x: 0,
+                y: 0,
+                width: 1,
+                height: 1
+            }
+        )
         .is_err());
     assert!(mgr.navigate(&ghost, "https://x").is_err());
     assert!(mgr.destroy(&ghost).is_err());

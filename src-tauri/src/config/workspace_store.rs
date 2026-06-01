@@ -302,6 +302,9 @@ mod tests {
         w.panel_pull_requests.insert(p3, "#3 feat".into());
         add(&mut store, w);
         // Distinct rows, deterministic order, the duplicate "#3 feat" appears once.
-        assert_eq!(snapshot(&store)[0].pull_request_rows, vec!["#12 fix", "#3 feat"]);
+        assert_eq!(
+            snapshot(&store)[0].pull_request_rows,
+            vec!["#12 fix", "#3 feat"]
+        );
     }
 }

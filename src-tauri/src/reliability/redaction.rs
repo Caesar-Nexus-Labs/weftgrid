@@ -223,9 +223,7 @@ fn skip_spaces(bytes: &[u8], mut i: usize) -> usize {
 fn consume_value(bytes: &[u8], mut i: usize) -> usize {
     while i < bytes.len() {
         match bytes[i] {
-            b' ' | b'\t' | b'\r' | b'\n' | b';' | b',' | b'"' | b'\'' | b'&' | b'}' | b']' => {
-                break
-            }
+            b' ' | b'\t' | b'\r' | b'\n' | b';' | b',' | b'"' | b'\'' | b'&' | b'}' | b']' => break,
             _ => i += 1,
         }
     }
@@ -339,7 +337,8 @@ mod tests {
 
     #[test]
     fn redacts_rsa_private_key_block() {
-        let line = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA\n-----END RSA PRIVATE KEY-----";
+        let line =
+            "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA\n-----END RSA PRIVATE KEY-----";
         let out = redact(line);
         assert_no_leak(&out, "MIIEpAIBAAKCAQEA");
         assert!(out.contains("<redacted:ssh-private-key>"));

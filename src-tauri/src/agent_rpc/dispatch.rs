@@ -73,10 +73,7 @@ pub struct Dispatcher {
 }
 
 impl Dispatcher {
-    pub fn new(
-        automation: Box<dyn AutomationDispatch>,
-        handlers: Box<dyn DomainHandlers>,
-    ) -> Self {
+    pub fn new(automation: Box<dyn AutomationDispatch>, handlers: Box<dyn DomainHandlers>) -> Self {
         Dispatcher {
             automation,
             handlers,
@@ -210,12 +207,7 @@ mod tests {
             fn eval(&self, t: &PaneTarget, js: &str) -> AutomationResult {
                 self.0.eval(t, js)
             }
-            fn wait(
-                &self,
-                t: &PaneTarget,
-                s: Option<&str>,
-                ms: Option<u64>,
-            ) -> AutomationResult {
+            fn wait(&self, t: &PaneTarget, s: Option<&str>, ms: Option<u64>) -> AutomationResult {
                 self.0.wait(t, s, ms)
             }
             fn get(

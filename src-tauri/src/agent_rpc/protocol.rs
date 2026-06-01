@@ -21,19 +21,14 @@ pub const MAX_FRAME_BYTES: usize = 64 * 1024 * 1024;
 /// Which browser pane an automation op targets. Defaults to [`PaneTarget::Focused`]
 /// so an agent with a single browser pane needs no `--pane`; the dispatcher errors
 /// on ambiguity (multiple panes, none focused).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PaneTarget {
     /// Resolve to the currently focused browser pane.
+    #[default]
     Focused,
     /// An explicit pane id (from `weft browser ... --pane <id>`).
     Pane { id: String },
-}
-
-impl Default for PaneTarget {
-    fn default() -> Self {
-        PaneTarget::Focused
-    }
 }
 
 /// Which property `get` reads off the element behind a ref. Mirrors P7's

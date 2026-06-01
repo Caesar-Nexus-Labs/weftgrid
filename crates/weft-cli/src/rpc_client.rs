@@ -118,10 +118,7 @@ async fn transact(endpoint: &str, body: &[u8]) -> io::Result<Vec<u8>> {
     let mut stream = loop {
         match ClientOptions::new().open(endpoint) {
             Ok(s) => break s,
-            Err(e)
-                if e.raw_os_error()
-                    == Some(windows_pipe_busy_code()) =>
-            {
+            Err(e) if e.raw_os_error() == Some(windows_pipe_busy_code()) => {
                 tokio::time::sleep(std::time::Duration::from_millis(20)).await;
             }
             Err(e) => return Err(e),
