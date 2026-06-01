@@ -32,10 +32,6 @@ jobs:
         with:
           components: clippy, rustfmt
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: src-tauri
-
       - name: Install JS deps
         run: npm ci
 
@@ -76,10 +72,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: crates/weft-cli
 
       - name: Rust fmt
         working-directory: crates/weft-cli
