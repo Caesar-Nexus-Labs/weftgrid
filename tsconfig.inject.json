@@ -1,0 +1,14 @@
+{
+  "//": "Inject-bundle pipeline (P2 Keystone 2). SEPARATE from app tsconfig. Entry inject/, type-checks the page-context inject script. Actual bundling to IIFE is done by esbuild (see scripts/build-inject.mjs); this file only provides strict type-checking for inject sources.",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": [],
+    "skipLibCheck": true
+  },
+  "include": ["inject/**/*.ts"]
+}

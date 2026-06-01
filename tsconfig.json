@@ -1,0 +1,22 @@
+{
+  "extends": "./.svelte-kit/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "bundler"
+  },
+  "exclude": ["inject", "scripts", "src-tauri"]
+  // allowJs:false = poka-yoke against hand-written JS in app code (P2 Keystone 2).
+  // inject/ (built to src-tauri/assets/inject/*.js) is EXCLUDED so its generated
+  // page-context JS is never seen by the app tsconfig — no-JS stays strict for app
+  // code while the inject bundle still builds via tsconfig.inject.json + esbuild.
+  //
+  // Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
+  // except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
+}

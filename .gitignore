@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# NOTE: src-tauri/assets/inject/snapshot.js is NOT ignored — it is embedded at
+# compile time via include_str!, so a committed (stub) copy must exist for a
+# fresh `cargo build` without running `npm run build:inject` first. The build
+# step regenerates it; commit the regenerated copy when the inject source changes.

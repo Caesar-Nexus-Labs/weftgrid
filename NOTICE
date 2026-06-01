@@ -1,0 +1,29 @@
+weftgrid
+Copyright (C) 2026 weftgrid contributors
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. See the LICENSE file for the full text.
+
+================================================================================
+ATTRIBUTIONS
+================================================================================
+
+weftgrid is a cross-platform rewrite based on cmux.
+
+1. cmux
+   Copyright (C) Manaflow Inc.
+   Licensed under GPL-3.0-or-later.
+   Source: https://github.com/manaflow-ai/cmux
+   weftgrid is a derivative work of cmux; portions are ported and modified from
+   the cmux source. Per GPL-3.0 section 5(a), modified files carry a notice
+   stating they were changed and the date of change.
+
+2. agent-browser
+   Copyright (C) Vercel, Inc. and agent-browser contributors.
+   Licensed under the Apache License, Version 2.0.
+   Source: https://github.com/vercel-labs/agent-browser
+   The browser automation snapshot/action algorithm in weftgrid is ported from
+   agent-browser. The Apache-2.0 license requires preservation of this
+   attribution notice.
