@@ -1,0 +1,56 @@
+name: release
+
+# Build the desktop installers (track A, unsigned) on real Windows + Linux.
+# Build-only: no release upload, no code-signing secret required — proves
+# `tauri build` produces NSIS/MSI (Windows) and AppImage/deb (Linux) artifacts.
+# Ed25519 updater signing + GitHub Release upload land once the signing secret
+# exists (see plans signpath-application-prep + P9 follow-up).
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  bundle:
+    name: bundle (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-22.04, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux webkit deps
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install JS deps
+        run: npm ci
+
+      # tauri build runs beforeBuildCommand (build:inject && vite build) itself.
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: ./
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: weftgrid-installers-${{ matrix.platform }}
+          path: |
+            src-tauri/target/release/bundle/nsis/*-setup.exe
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/appimage/*.AppImage
+            src-tauri/target/release/bundle/deb/*.deb
+          if-no-files-found: warn
