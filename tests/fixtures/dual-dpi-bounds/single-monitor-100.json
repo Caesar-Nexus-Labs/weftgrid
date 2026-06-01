@@ -1,0 +1,14 @@
+{
+  "_comment": "REPRESENTATIVE captured-geometry fixture (NOT a synthetic single-scale formula). Models a standard 1080p primary monitor at 100% scale with a decorated main window. Values resemble a real capture: outer_position()/inner_position() in physical px, getBoundingClientRect() in CSS px. Expected rect computed as client-origin (physical) + anchor-offset*scale.",
+  "description": "single monitor, 100% scale, decorated main window",
+  "input": {
+    "main_outer_physical": { "x": 100, "y": 100 },
+    "client_inset_physical": { "x": 8, "y": 31 },
+    "anchor_rect_css": { "x": 300.0, "y": 80.0, "width": 900.0, "height": 600.0 },
+    "scroll_offset_css": [0.0, 0.0],
+    "main_scale": 1.0
+  },
+  "expected_physical_rect": { "x": 408, "y": 211, "width": 900, "height": 600 },
+  "monitors": [{ "x": 0, "y": 0, "width": 1920, "height": 1080 }],
+  "expected_straddles": false
+}

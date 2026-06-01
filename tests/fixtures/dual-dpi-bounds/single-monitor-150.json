@@ -1,0 +1,14 @@
+{
+  "_comment": "REPRESENTATIVE captured-geometry fixture (NOT synthetic). Main window on a single 4K monitor at 150% scale. outer/inner positions are physical px (large because physical 4K space); anchor rect is CSS px (logical). Expected = client-origin (physical) + anchor*1.5. Confirms the size and offset both scale by the host monitor's factor.",
+  "description": "single monitor, 150% scale (4K), decorated main window",
+  "input": {
+    "main_outer_physical": { "x": 200, "y": 150 },
+    "client_inset_physical": { "x": 12, "y": 46 },
+    "anchor_rect_css": { "x": 320.0, "y": 96.0, "width": 800.0, "height": 540.0 },
+    "scroll_offset_css": [0.0, 0.0],
+    "main_scale": 1.5
+  },
+  "expected_physical_rect": { "x": 692, "y": 340, "width": 1200, "height": 810 },
+  "monitors": [{ "x": 0, "y": 0, "width": 3840, "height": 2160 }],
+  "expected_straddles": false
+}

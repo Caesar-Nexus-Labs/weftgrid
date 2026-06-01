@@ -1,0 +1,30 @@
+[package]
+name = "weft-cli"
+version = "0.1.0"
+edition = "2021"
+description = "Unified `weft` CLI: agent-in-shell surface that drives weftgrid over a local authenticated RPC socket/pipe"
+license = "GPL-3.0-or-later"
+
+# Single unified binary `weft` (subcommands browser/notify/ssh) — not multiple
+# exes. Standalone crate: it talks to the running app purely over the local
+# socket/pipe at runtime and never compiles against src-tauri.
+[[bin]]
+name = "weft"
+path = "src/main.rs"
+
+# Explicit target: the file keeps the project's `*.test.rs` convention while the
+# crate name stays a valid identifier (a bare `cli.test.rs` would yield the
+# illegal crate name `cli.test`).
+[[test]]
+name = "cli_parsing"
+path = "tests/cli.test.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Async runtime for the socket/named-pipe client. `net` covers UnixStream;
+# `rt` + `macros` give the lightweight single-thread runtime the short-lived CLI
+# needs. `io-util` for AsyncRead/Write framing helpers.
+tokio = { version = "1.52.3", features = ["rt", "net", "io-util", "macros", "time"] }
+directories = "6.0.0"

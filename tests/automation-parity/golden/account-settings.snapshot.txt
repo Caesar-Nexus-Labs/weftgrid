@@ -1,0 +1,12 @@
+- document "weftgrid parity fixture"
+    - heading "Account settings" [ref=e1]
+      - link "Home" [ref=e2]
+      - link "Billing" [ref=e3]
+      - textbox "Your name" [ref=e4]
+      - textbox "user@example.com" [ref=e5]
+      - checkbox "on" [ref=e6]
+      - button "Save changes" [ref=e7]
+      - button "Cancel edits" [ref=e8]
+      - listitem "First item" [ref=e9]
+      - listitem "Second item" [ref=e10]
+      - listitem "Third item" [ref=e11]

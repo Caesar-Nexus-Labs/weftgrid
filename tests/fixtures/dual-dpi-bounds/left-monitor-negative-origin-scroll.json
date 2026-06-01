@@ -1,0 +1,17 @@
+{
+  "_comment": "REPRESENTATIVE captured-geometry fixture (NOT synthetic). Main window lives on a SECONDARY monitor positioned to the LEFT of the primary, so its physical X is NEGATIVE (Windows virtual-screen space). Secondary is 100% scale. This fixture also exercises a non-zero scroll_offset_css: the caller reported the anchor in DOCUMENT-relative coords, so scroll_offset carries the negative scroll position (page scrolled 250 CSS px down, 40 right) to map back to the viewport. Expected = client-origin (negative physical) + (anchor + scroll)*scale.",
+  "description": "left monitor (negative physical X) + document-relative scroll offset, 100% scale",
+  "input": {
+    "main_outer_physical": { "x": -1920, "y": 0 },
+    "client_inset_physical": { "x": 8, "y": 31 },
+    "anchor_rect_css": { "x": 540.0, "y": 380.0, "width": 700.0, "height": 480.0 },
+    "scroll_offset_css": [-40.0, -250.0],
+    "main_scale": 1.0
+  },
+  "expected_physical_rect": { "x": -1412, "y": 161, "width": 700, "height": 480 },
+  "monitors": [
+    { "x": -1920, "y": 0, "width": 1920, "height": 1080 },
+    { "x": 0, "y": 0, "width": 1920, "height": 1080 }
+  ],
+  "expected_straddles": false
+}

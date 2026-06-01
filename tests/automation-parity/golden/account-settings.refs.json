@@ -1,0 +1,13 @@
+{
+  "e1": { "role": "heading", "name": "Account settings" },
+  "e2": { "role": "link", "name": "Home" },
+  "e3": { "role": "link", "name": "Billing" },
+  "e4": { "role": "textbox", "name": "Your name" },
+  "e5": { "role": "textbox", "name": "user@example.com" },
+  "e6": { "role": "checkbox", "name": "on" },
+  "e7": { "role": "button", "name": "Save changes" },
+  "e8": { "role": "button", "name": "Cancel edits" },
+  "e9": { "role": "listitem", "name": "First item" },
+  "e10": { "role": "listitem", "name": "Second item" },
+  "e11": { "role": "listitem", "name": "Third item" }
+}

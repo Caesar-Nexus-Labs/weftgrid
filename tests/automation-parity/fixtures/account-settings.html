@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+  Golden parity fixture (P7). A fixed, layout-stable page exercised by the
+  single inject-JS DOM-walk on BOTH WebView2 (Windows) and WebKitGTK (Linux).
+  The real-engine harness loads this, runs `window.__weft.dispatch({action:'snapshot'})`,
+  and asserts the snapshot text + ref ids are byte-identical across OS.
+
+  Keep this file STABLE: changing markup invalidates the golden. Inline styles
+  give deterministic visibility (no external CSS / fonts / async layout).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>weftgrid parity fixture</title>
+  <style>
+    body { margin: 0; font: 16px/1.4 monospace; }
+    .hidden { display: none; }
+    .invisible { visibility: hidden; }
+    button, a, input { display: inline-block; width: 120px; height: 32px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Account settings</h1>
+    <nav aria-label="Primary">
+      <a href="/home">Home</a>
+      <a href="/billing">Billing</a>
+    </nav>
+
+    <form id="profile">
+      <label for="display-name">Display name</label>
+      <input id="display-name" type="text" placeholder="Your name" />
+
+      <label for="email">Email</label>
+      <input id="email" type="text" value="user@example.com" />
+
+      <input id="newsletter" type="checkbox" checked />
+      <label for="newsletter">Subscribe</label>
+
+      <button type="submit">Save changes</button>
+      <button type="button" aria-label="Cancel edits">Cancel</button>
+    </form>
+
+    <ul>
+      <li>First item</li>
+      <li>Second item</li>
+      <li>Third item</li>
+    </ul>
+
+    <!-- visibility-filtered: these MUST NOT appear in the snapshot on a real
+         engine (the whole reason parity runs off-jsdom). -->
+    <button class="hidden">Hidden button</button>
+    <a class="invisible" href="/ghost">Invisible link</a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "_comment": "REPRESENTATIVE captured-geometry fixture (NOT synthetic single-scale). THE STRADDLE CASE. Dual monitor: primary A is physical x[0,2560) at 150% scale and hosts the main window; secondary B is physical x[2560,4480) at 100% scale to the right. The main window sits near A's right edge so the anchor overlay crosses the 2560 boundary into B. Critical point: the physical rect is built using ONLY A's scale (1.5) applied to the anchor offset; the window position came from the OS already physical, so we NEVER apply B's 100% scale to the half on B. The rect stays correct and the OS renders each half at its own DPI.",
+  "description": "dual monitor straddle 150%/100% — overlay crosses the DPI boundary",
+  "input": {
+    "main_outer_physical": { "x": 2000, "y": 100 },
+    "client_inset_physical": { "x": 12, "y": 46 },
+    "anchor_rect_css": { "x": 100.0, "y": 80.0, "width": 600.0, "height": 400.0 },
+    "scroll_offset_css": [0.0, 0.0],
+    "main_scale": 1.5
+  },
+  "expected_physical_rect": { "x": 2162, "y": 266, "width": 900, "height": 600 },
+  "monitors": [
+    { "x": 0, "y": 0, "width": 2560, "height": 1600 },
+    { "x": 2560, "y": 0, "width": 1920, "height": 1080 }
+  ],
+  "expected_straddles": true
+}
