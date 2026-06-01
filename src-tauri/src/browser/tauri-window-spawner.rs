@@ -20,6 +20,9 @@ use super::overlay_bounds::PhysicalRect;
 use super::overlay_manager::{OverlayCreateParams, WindowSpawner};
 
 /// Label of the main window the overlays are owned by / positioned against.
+/// Only referenced on Windows (the `owner` builder call); on other platforms the
+/// overlay follows the main window via bounds-sync, so the const would be dead.
+#[cfg(windows)]
 const MAIN_WINDOW_LABEL: &str = "main";
 
 /// Tauri-backed spawner. Cloneable handle so the manager can live in `.manage()`d
@@ -56,6 +59,9 @@ impl<R: Runtime> WindowSpawner for TauriWindowSpawner<R> {
 
         // CDP: only override args when automation is on; otherwise wry keeps its
         // own (correct) defaults. The override string re-includes those defaults.
+        // `additional_browser_args` is WebView2-only (Windows); on other platforms
+        // the CDP-port mechanism does not apply, so the arg is simply not set.
+        #[cfg(windows)]
         if let Some(args) = params.cdp_args() {
             builder = builder.additional_browser_args(&args);
         }
@@ -69,7 +75,10 @@ impl<R: Runtime> WindowSpawner for TauriWindowSpawner<R> {
         }
 
         // Own + position relative to the main window so the overlay follows it
-        // across virtual desktops / z-order (breakage modes #1, #7).
+        // across virtual desktops / z-order (breakage modes #1, #7). `owner` is a
+        // Win32 owner-window concept (Windows-only on the builder); on WebKitGTK the
+        // overlay follows the main window via the bounds-sync reposition path instead.
+        #[cfg(windows)]
         if let Some(main) = self.app.get_webview_window(MAIN_WINDOW_LABEL) {
             builder = builder
                 .owner(&main)
