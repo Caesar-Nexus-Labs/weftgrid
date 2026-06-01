@@ -166,7 +166,8 @@ impl NotificationManager {
             .values()
             .cloned()
             .collect();
-        all.sort_by(|a, b| b.seq.cmp(&a.seq));
+        // Newest first (descending seq).
+        all.sort_by_key(|n| std::cmp::Reverse(n.seq));
         all
     }
 }

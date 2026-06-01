@@ -56,7 +56,7 @@ pub struct RotatedFile {
 /// the paths to delete so a caller can dry-run / test without touching disk.
 pub fn plan_retention(policy: &RotationPolicy, mut files: Vec<RotatedFile>) -> Vec<PathBuf> {
     // Newest first so index >= keep_files is the tail we drop.
-    files.sort_by(|a, b| a.age.cmp(&b.age));
+    files.sort_by_key(|f| f.age);
     let mut to_delete = Vec::new();
     for (idx, f) in files.into_iter().enumerate() {
         let over_count = idx >= policy.keep_files;
